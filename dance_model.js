@@ -16,9 +16,11 @@ var Hands4 = function(center, radius, dance) {
 		return this.center[1] + this.dance.getY(count, pos);
 	}
 
-	var Dance = function() {
+	var Dance = function(repeatFlag) {
+		this.repeat = repeatFlag;
 		this.moves = [];
 		this.defaultMove = new Stand(0,75);
+		this.danceLength = 0;
 	}
 
 	Dance.prototype.getX = function(count, pos) {
@@ -30,6 +32,9 @@ var Hands4 = function(center, radius, dance) {
 	}
 
 	Dance.prototype.currentMove = function(count) {
+		if(this.repeat) {
+			count %= this.danceLength;
+		}
 		for(var i = 0; i < this.moves.length; i++) {
 			if(count > this.moves[i].duration) {
 				count -= this.moves[i].duration;
@@ -38,6 +43,11 @@ var Hands4 = function(center, radius, dance) {
 			}
 		}
 		return this.defaultMove;
+	}
+
+	Dance.prototype.addMove = function(move) {
+		this.moves.push(move);
+		this.danceLength += move.duration;
 	}
 
 	var Move = function() {

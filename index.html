@@ -31,9 +31,9 @@ circle {
 	var count_display = d3.select("body").append("p")
 		.text(0);
 
-	var dance = new Dance();
-	dance.moves.push(new Circle(8, 1, 75));
-	dance.moves.push(new Circle(8, -1, 75));
+	var dance = new Dance(false);
+	dance.addMove(new Circle(8, 1, 75));
+	dance.addMove(new Circle(8, -1, 75));
 
 	var h4s = [];
 	var h4 = new Hands4([250,250], 75, dance);

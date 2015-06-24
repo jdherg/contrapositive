@@ -41,7 +41,8 @@ circle {
 	var dancers = [];
 	for (var i = 0; i < 4; i++) {
 		dancers.push(
-			{pos: i,
+			{id: i,
+			 pos: i,
 			 theta: 0});
 		h4.dancers.push(dancers[i]);
 		dancers[i].h4 = h4;
@@ -50,22 +51,21 @@ circle {
 
 	var dots = svg.selectAll("circle")
 			.data(dancers)
-			.enter().append("circle");
+			.enter().append("circle")
+			.attr("fill", function(d) {
+				return "#" + d.id * 222;
+			});
 
 
 	draw(0);
 	d3.timer(animate);
 
 	function draw(count) {
-		
 				dots.attr("cx", function(d) {
 					return d.h4.getX(count, d.pos);
 				})
 				.attr("cy", function(d) {
 					return d.h4.getY(count, d.pos);
-				})
-				.attr("fill", function(d) {
-					return "#" +d.pos * 222;
 				});
 				count_display.text(Math.floor(count) % 8);
 	}

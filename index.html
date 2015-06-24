@@ -19,6 +19,9 @@ circle {
 		height = 500,
 		tau = 2*Math.PI;
 
+	var counts_per_second = 4,
+		taus_per_count = 1/8;
+
 	var Hands4 = function(center, radius) {
 		this.center = center;
 		this.radius = radius;
@@ -36,6 +39,9 @@ circle {
 	var svg = d3.select("body").append("svg")
 		.attr("width", width)
 		.attr("height", height);
+
+	var count_display = d3.select("body").append("p")
+		.text(0);
 
 	var h4s = [];
 	var h4 = new Hands4([250,250],75);
@@ -55,10 +61,19 @@ circle {
 			.data(dancers)
 			.enter().append("circle");
 
-	draw();
-	setInterval(animate,500);
 
-	function draw() {
+	draw();
+	d3.timer(animate);
+
+	function placeDancers(count) {
+
+		for (var i = 0; i < dancers.length; i++) {
+			dancers[i].theta = taus_per_count * count;
+		}
+
+	}
+
+	function draw(count) {
 		
 				dots.attr("cx", function(d) {
 					return d.h4.getX(d.pos);
@@ -69,15 +84,13 @@ circle {
 				.attr("fill", function(d) {
 					return "#" +d.pos * 222;
 				});
+				count_display.text(Math.floor(count) % 8);
 	}
 
-	function animate() {
-		console.log("Hello!")
-		for (var i = 0; i < dancers.length; i++) {
-			dancers[i].theta += 1/8;
-			dancers[i].theta %= 1;
-		}
-		draw();
+	function animate(elapsed) {
+		var count = elapsed/1000 * counts_per_second;
+		placeDancers(count);
+		draw(count);
 	}
 
 </script>

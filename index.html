@@ -13,6 +13,8 @@ circle {
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+<script src="dance_model.js" charset="utf-8"></script>
+
 <body>
 <script>
 	var width = 500,
@@ -22,20 +24,6 @@ circle {
 	var counts_per_second = 4,
 		taus_per_count = 1/8;
 
-	var Hands4 = function(center, radius) {
-		this.center = center;
-		this.radius = radius;
-		this.dancers = [];
-	};
-
-	Hands4.prototype.getX = function(pos){
-		return this.center[0] + Math.cos(tau/8 + tau/4 * pos + this.dancers[pos].theta * tau) * this.radius;
-	}
-
-	Hands4.prototype.getY = function(pos){
-		return this.center[1] + Math.sin(tau/8 + tau/4 * pos + this.dancers[pos].theta * tau) * this.radius;
-	}
-
 	var svg = d3.select("body").append("svg")
 		.attr("width", width)
 		.attr("height", height);
@@ -43,9 +31,11 @@ circle {
 	var count_display = d3.select("body").append("p")
 		.text(0);
 
-	var h4s = [];
-	var h4 = new Hands4([250,250],75);
+	var dance = new Dance();
+	dance.moves.push(new Circle(75, 1));
 
+	var h4s = [];
+	var h4 = new Hands4([250,250], 75, dance);
 
 	var dancers = [];
 	for (var i = 0; i < 4; i++) {
@@ -62,24 +52,16 @@ circle {
 			.enter().append("circle");
 
 
-	draw();
+	draw(0);
 	d3.timer(animate);
-
-	function placeDancers(count) {
-
-		for (var i = 0; i < dancers.length; i++) {
-			dancers[i].theta = taus_per_count * count;
-		}
-
-	}
 
 	function draw(count) {
 		
 				dots.attr("cx", function(d) {
-					return d.h4.getX(d.pos);
+					return d.h4.getX(count, d.pos);
 				})
 				.attr("cy", function(d) {
-					return d.h4.getY(d.pos);
+					return d.h4.getY(count, d.pos);
 				})
 				.attr("fill", function(d) {
 					return "#" +d.pos * 222;
@@ -89,7 +71,6 @@ circle {
 
 	function animate(elapsed) {
 		var count = elapsed/1000 * counts_per_second;
-		placeDancers(count);
 		draw(count);
 	}
 

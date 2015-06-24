@@ -21,11 +21,20 @@ var Hands4 = function(center, radius, dance) {
 	}
 
 	Dance.prototype.getX = function(count, pos) {
-		return this.moves[0].getX(count, pos);
+		return this.currentMove(count).getX(count, pos);
 	}
 
 	Dance.prototype.getY = function(count, pos) {
-		return this.moves[0].getY(count, pos);
+		return this.currentMove(count).getY(count, pos);
+	}
+
+	Dance.prototype.currentMove = function(count) {
+		var count = count % 16;
+		if(count < 8) {
+			return this.moves[0];
+		} else {
+			return this.moves[1];
+		}
 	}
 
 	var Move = function() {
@@ -40,18 +49,19 @@ var Hands4 = function(center, radius, dance) {
 		throw "not implemented";
 	}
 
-	var Circle = function(radius, direction) {
+	var Circle = function(radius, direction, duration) {
 		this.radius = radius;
 		this.direction = direction;
 		this.speed = 1/8;
+		this.duration = duration;
 	}
 
 	Circle.prototype.__proto__ = Move.prototype;
 
 	Circle.prototype.getX = function(count, pos) {
-		return Math.cos(tau/8 + tau/4 * pos + this.speed * count * tau) * this.radius
+		return Math.cos(tau/8 + tau/4 * pos + this.direction * this.speed * count * tau) * this.radius
 	}
 
 	Circle.prototype.getY = function(count, pos) {
-		return Math.sin(tau/8 + tau/4 * pos + this.speed * count * tau) * this.radius
+		return Math.sin(tau/8 + tau/4 * pos + this.direction * this.speed * count * tau) * this.radius
 	}

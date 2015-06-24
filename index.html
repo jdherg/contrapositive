@@ -32,8 +32,8 @@ circle {
 		.text(0);
 
 	var dance = new Dance(false);
-	dance.addMove(new Circle(8, 1, 75));
-	dance.addMove(new Circle(8, -1, 75));
+	dance.addMove(new Circle(6, 1, 75));
+	dance.addMove(new Circle(10, -1, 75));
 
 	var h4s = [];
 	var h4 = new Hands4([250,250], 75, dance);
@@ -46,17 +46,27 @@ circle {
 			 theta: 0});
 		h4.dancers.push(dancers[i]);
 		dancers[i].h4 = h4;
-	};
+	}
 	h4s.push(h4);
 
 	var dots = svg.selectAll("circle")
 			.data(dancers)
 			.enter().append("circle")
 			.attr("fill", function(d) {
-				return "#" + d.id * 222;
+				switch(d.id) {
+					case 0:
+						return "red";
+					case 1:
+						return "blue";
+					case 2:
+						return "green";
+					case 3:
+						return "yellow";
+				}
 			});
 
 
+	var previousMove = dance.currentMove(0)[0];
 	draw(0);
 	d3.timer(animate);
 
@@ -67,11 +77,19 @@ circle {
 				.attr("cy", function(d) {
 					return d.h4.getY(count, d.pos);
 				});
-				count_display.text(Math.floor(count) % 8);
+				count_display.text(Math.floor(count) % dance.danceLength);
 	}
 
 	function animate(elapsed) {
 		var count = elapsed/1000 * counts_per_second;
+		var currentMove = dance.currentMove(count)[0];
+
+		if(previousMove !== currentMove) {
+			dancers.forEach(function(dancer){
+				dancer.pos = previousMove.posTransform(dancer.pos);
+			});
+			previousMove = currentMove;
+		}
 		draw(count);
 	}
 

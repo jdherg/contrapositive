@@ -104,6 +104,65 @@ var Hands4 = function(center, radius, dance) {
 	};
 
 	Stand.prototype.getY = function(count, pos) {
-		return Math.sin(tau/8 + tau/4 * pos) * this.radius
-
+		return Math.sin(tau/8 + tau/4 * pos) * this.radius;
 	};
+
+	var Allemande = function(duration, direction, radius) {
+		this.duration = duration;
+		this.direction = direction;
+		this.radius = radius;
+		this.speed = 1/4;
+	}
+
+	Allemande.prototype.__proto__ = Move.prototype;
+
+	Allemande.prototype.getX = function(count, pos) {
+		var startingPosition = Math.cos(tau/8 + tau/4 * pos) * this.radius;
+		if(count === 0) {
+			return startingPosition;
+		}
+		var cx = (this.getX(0,pos) + this.getX(0,pos^1))/2;
+		var cy = (this.getY(0,pos) + this.getY(0,pos^1))/2;
+		var polar = cartesianToPolar([cx,cy],[this.getX(0,pos),this.getY(0,pos)]);
+		var theta_delta = tau * this.speed * count * this.direction;
+		var theta_end = polar[1] + theta_delta;
+		return Math.cos(theta_end) * polar[0] + cx;
+	}
+
+	Allemande.prototype.getY = function(count, pos) {
+		var startingPosition = Math.sin(tau/8 + tau/4 * pos) * this.radius;
+		if(count === 0) {
+			return startingPosition;
+		}
+		var cx = (this.getX(0,pos) + this.getX(0,pos^1))/2;
+		var cy = (this.getY(0,pos) + this.getY(0,pos^1))/2;
+		var polar = cartesianToPolar([cx,cy],[this.getX(0,pos),this.getY(0,pos)]);
+		var theta_delta = tau * this.speed * count * this.direction;
+		var theta_end = polar[1] + theta_delta;
+		return Math.sin(theta_end) * polar[0] + cy;
+
+	}
+
+
+function cartesianToPolar(center, point){
+    var dx = point[0] - center[0],
+        dy = point[1] - center[1],
+        d2 = dx * dx + dy * dy,
+        dist = Math.sqrt(d2),
+        sin = dy / dist,
+        cos = dx / dist,
+        asin = Math.asin(sin),
+        acos = Math.acos(cos);
+        var theta = 0;
+        if(sin < 0) {
+            theta = -1 * acos;
+        } else {
+          if(cos < 0) {
+            theta = 2 * Math.PI - acos;
+          } else {
+            theta = acos;
+          }
+        }
+        return [dist, theta];
+}
+

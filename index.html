@@ -31,7 +31,8 @@ circle {
 	var count_display = d3.select("body").append("p")
 		.text(0);
 
-	var dance = new Dance(false);
+	var dance = new Dance(true);
+	dance.addMove(new Allemande(8, 1, 75));
 	dance.addMove(new Circle(6, 1, 75));
 	dance.addMove(new Circle(10, -1, 75));
 

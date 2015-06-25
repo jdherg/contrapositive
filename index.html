@@ -77,7 +77,7 @@ circle {
 				.attr("cy", function(d) {
 					return d.h4.getY(count, d.pos);
 				});
-				count_display.text(Math.floor(count) % dance.danceLength);
+				count_display.text(Math.floor(count) % dance.duration);
 	}
 
 	function animate(elapsed) {

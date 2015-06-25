@@ -56,12 +56,16 @@ var Hands4 = function(center, radius, dance) {
 
 	};
 
-	Move.prototype.getX = function(count, pos) {
+	Move.prototype.getCoords = function(count,pos) {
 		throw "not implemented";
+	}
+
+	Move.prototype.getX = function(count, pos) {
+		return this.getCoords(count, pos)[0];
 	};
 
 	Move.prototype.getY = function(count, pos) {
-		throw "not implemented";
+		return this.getCoords(count, pos)[1];
 	};
 
 	Move.prototype.posTransform = function(pos) {
@@ -77,13 +81,10 @@ var Hands4 = function(center, radius, dance) {
 
 	Circle.prototype.__proto__ = Move.prototype;
 
-	Circle.prototype.getX = function(count, pos) {
-		return Math.cos(tau/8 + tau/4 * pos + this.direction * this.speed * count * tau) * this.radius
-	};
-
-	Circle.prototype.getY = function(count, pos) {
-		return Math.sin(tau/8 + tau/4 * pos + this.direction * this.speed * count * tau) * this.radius
-	};
+	Circle.prototype.getCoords = function(count, pos) {
+		var theta = tau/8 + tau/4 * pos + this.direction * this.speed * count * tau;
+		return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
+	}
 
 	Circle.prototype.posTransform = function(pos) {
 		var posDelta = this.direction * this.duration * this.speed * 4;
@@ -99,48 +100,33 @@ var Hands4 = function(center, radius, dance) {
 
 	Stand.prototype.__proto__ = Move.prototype;
 
-	Stand.prototype.getX = function(count, pos) {
-		return Math.cos(tau/8 + tau/4 * pos) * this.radius;
-	};
-
-	Stand.prototype.getY = function(count, pos) {
-		return Math.sin(tau/8 + tau/4 * pos) * this.radius;
-	};
+	Stand.prototype.getCoords = function(count, pos) {
+		var theta = tau/8 + tau/4 * pos;
+		return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
+	}
 
 	var Allemande = function(duration, direction, radius) {
 		this.duration = duration;
 		this.direction = direction;
 		this.radius = radius;
 		this.speed = 1/4;
-	}
+	};
 
 	Allemande.prototype.__proto__ = Move.prototype;
 
-	Allemande.prototype.getX = function(count, pos) {
-		var startingPosition = Math.cos(tau/8 + tau/4 * pos) * this.radius;
+	Allemande.prototype.getCoords = function(count, pos) {
+		var theta = tau/8 + tau/4 * pos;
+		var startingPosition = [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
 		if(count === 0) {
 			return startingPosition;
 		}
-		var cx = (this.getX(0,pos) + this.getX(0,pos^1))/2;
-		var cy = (this.getY(0,pos) + this.getY(0,pos^1))/2;
-		var polar = cartesianToPolar([cx,cy],[this.getX(0,pos),this.getY(0,pos)]);
+		var cx = (startingPosition[0] + this.getX(0,pos^1))/2;
+		var cy = (startingPosition[1] + this.getY(0,pos^1))/2;
+		var polar = cartesianToPolar([cx,cy],startingPosition);
 		var theta_delta = tau * this.speed * count * this.direction;
 		var theta_end = polar[1] + theta_delta;
-		return Math.cos(theta_end) * polar[0] + cx;
-	}
-
-	Allemande.prototype.getY = function(count, pos) {
-		var startingPosition = Math.sin(tau/8 + tau/4 * pos) * this.radius;
-		if(count === 0) {
-			return startingPosition;
-		}
-		var cx = (this.getX(0,pos) + this.getX(0,pos^1))/2;
-		var cy = (this.getY(0,pos) + this.getY(0,pos^1))/2;
-		var polar = cartesianToPolar([cx,cy],[this.getX(0,pos),this.getY(0,pos)]);
-		var theta_delta = tau * this.speed * count * this.direction;
-		var theta_end = polar[1] + theta_delta;
-		return Math.sin(theta_end) * polar[0] + cy;
-	}
+		return [Math.cos(theta_end) * polar[0] + cx, Math.sin(theta_end) * polar[0] + cy];
+	};
 
 function cartesianToPolar(center, point){
     var dx = point[0] - center[0],

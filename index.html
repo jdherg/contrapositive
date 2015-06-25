@@ -17,7 +17,7 @@ circle {
 
 <body>
 <script>
-	var width = 500,
+	var width = 1000,
 		height = 500,
 		tau = 2*Math.PI;
 
@@ -32,29 +32,28 @@ circle {
 		.text(0);
 
 	var dance = new Dance(true);
-	dance.addMove(new Allemande(8, 1, 75));
+	dance.addMove(new Allemande(4, 1, 75));
 	dance.addMove(new Circle(6, 1, 75));
 	dance.addMove(new Circle(10, -1, 75));
 
 	var h4s = [];
-	var h4 = new Hands4([250,250], 75, dance);
+	h4s.push(new Hands4([250,250], 75, dance));
+	h4s.push(new Hands4([750,250], 75, dance));
 
 	var dancers = [];
-	for (var i = 0; i < 4; i++) {
+	for (var i = 0; i < h4s.length*4; i++) {
 		dancers.push(
 			{id: i,
-			 pos: i,
+			 pos: i % 4,
 			 theta: 0});
-		h4.dancers.push(dancers[i]);
-		dancers[i].h4 = h4;
+		h4s[Math.floor(i/4)].dancers.push(dancers[i]);
+		dancers[i].h4 = h4s[Math.floor(i/4)];
 	}
-	h4s.push(h4);
-
 	var dots = svg.selectAll("circle")
 			.data(dancers)
 			.enter().append("circle")
 			.attr("fill", function(d) {
-				switch(d.id) {
+				switch(d.id % 4) {
 					case 0:
 						return "red";
 					case 1:

@@ -140,9 +140,7 @@ var Hands4 = function(center, radius, dance) {
 		var theta_delta = tau * this.speed * count * this.direction;
 		var theta_end = polar[1] + theta_delta;
 		return Math.sin(theta_end) * polar[0] + cy;
-
 	}
-
 
 function cartesianToPolar(center, point){
     var dx = point[0] - center[0],

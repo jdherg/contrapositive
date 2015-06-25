@@ -57,8 +57,9 @@ var Hands4 = function(center, radius, dance) {
 	};
 
 	Move.prototype.getCoords = function(count,pos) {
-		throw "not implemented";
-	}
+		var theta = tau/8 + (tau/4 * pos);
+		return [Math.cos(theta) * 75, Math.sin(theta) * 75];
+	};
 
 	Move.prototype.getX = function(count, pos) {
 		return this.getCoords(count, pos)[0];
@@ -82,9 +83,9 @@ var Hands4 = function(center, radius, dance) {
 	Circle.prototype.__proto__ = Move.prototype;
 
 	Circle.prototype.getCoords = function(count, pos) {
-		var theta = tau/8 + tau/4 * pos + this.direction * this.speed * count * tau;
+		var theta = tau/8 + (tau/4 * pos) + this.direction * this.speed * count * tau;
 		return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
-	}
+	};
 
 	Circle.prototype.posTransform = function(pos) {
 		var posDelta = this.direction * this.duration * this.speed * 4;
@@ -100,11 +101,6 @@ var Hands4 = function(center, radius, dance) {
 
 	Stand.prototype.__proto__ = Move.prototype;
 
-	Stand.prototype.getCoords = function(count, pos) {
-		var theta = tau/8 + tau/4 * pos;
-		return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
-	}
-
 	var Allemande = function(duration, direction, radius) {
 		this.duration = duration;
 		this.direction = direction;
@@ -115,13 +111,11 @@ var Hands4 = function(center, radius, dance) {
 	Allemande.prototype.__proto__ = Move.prototype;
 
 	Allemande.prototype.getCoords = function(count, pos) {
-		var theta = tau/8 + tau/4 * pos;
-		var startingPosition = [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
-		if(count === 0) {
-			return startingPosition;
-		}
-		var cx = (startingPosition[0] + this.getX(0,pos^1))/2;
-		var cy = (startingPosition[1] + this.getY(0,pos^1))/2;
+		var initialPositionFor = this.__proto__.__proto__.getCoords;
+        var startingPosition = initialPositionFor(0, pos);
+		var partnerStartingPosition = initialPositionFor(0, pos^1);
+        var cx = (startingPosition[0] + partnerStartingPosition[0])/2;
+		var cy = (startingPosition[1] + partnerStartingPosition[1])/2;
 		var polar = cartesianToPolar([cx,cy],startingPosition);
 		var theta_delta = tau * this.speed * count * this.direction;
 		var theta_end = polar[1] + theta_delta;
@@ -131,11 +125,9 @@ var Hands4 = function(center, radius, dance) {
 function cartesianToPolar(center, point){
     var dx = point[0] - center[0],
         dy = point[1] - center[1],
-        d2 = dx * dx + dy * dy,
-        dist = Math.sqrt(d2),
+		dist = Math.sqrt(dx * dx + dy * dy),
         sin = dy / dist,
         cos = dx / dist,
-        asin = Math.asin(sin),
         acos = Math.acos(cos);
         var theta = 0;
         if(sin < 0) {

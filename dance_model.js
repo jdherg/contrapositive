@@ -52,13 +52,14 @@ var Hands4 = function(center, radius, dance) {
 		this.danceLength += move.duration;
 	};
 
-	var Move = function() {
-
+	var Move = function(duration, radius) {
+		this.duration = duration;
+		this.radius = radius;
 	};
 
 	Move.prototype.getCoords = function(count,pos) {
 		var theta = tau/8 + (tau/4 * pos);
-		return [Math.cos(theta) * 75, Math.sin(theta) * 75];
+		return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
 	};
 
 	Move.prototype.getX = function(count, pos) {
@@ -74,10 +75,9 @@ var Hands4 = function(center, radius, dance) {
 	};
 
 	var Circle = function(duration, direction, radius) {
-		this.radius = radius;
+		Move.call(this, duration, radius);
 		this.direction = direction;
 		this.speed = 1/8;
-		this.duration = duration;
 	};
 
 	Circle.prototype.__proto__ = Move.prototype;
@@ -95,23 +95,21 @@ var Hands4 = function(center, radius, dance) {
 	};
 
 	var Stand = function(duration, radius) {
-		this.duration = duration;
-		this.radius = radius;
+		Move.call(this, duration, radius);
 	};
 
 	Stand.prototype.__proto__ = Move.prototype;
 
 	var Allemande = function(duration, direction, radius) {
-		this.duration = duration;
+		Move.call(this, duration, radius);
 		this.direction = direction;
-		this.radius = radius;
 		this.speed = 1/4;
 	};
 
 	Allemande.prototype.__proto__ = Move.prototype;
 
 	Allemande.prototype.getCoords = function(count, pos) {
-		var initialPositionFor = this.__proto__.__proto__.getCoords;
+		var initialPositionFor = this.__proto__.__proto__.getCoords.bind(this);
         var startingPosition = initialPositionFor(0, pos);
 		var partnerStartingPosition = initialPositionFor(0, pos^1);
         var cx = (startingPosition[0] + partnerStartingPosition[0])/2;

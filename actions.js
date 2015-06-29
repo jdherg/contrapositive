@@ -55,7 +55,7 @@ Spin.prototype.getCoords = function (count, pos) {
     var polar = cartesianToPolar([cx, cy], startingPosition);
     var theta_delta = tau * this.speed * count * this.direction;
     var theta_end = polar[1] + theta_delta;
-    return [Math.cos(theta_end) * polar[0] + cx, Math.sin(theta_end) * polar[0] + cy];
+    return [Math.cos(theta_end) * this.radius + cx, Math.sin(theta_end) * this.radius + cy];
 };
 
 var Approach = function(duration, radius) {
@@ -72,10 +72,30 @@ Approach.prototype.getCoords = function(count, pos) {
     var centerX = (startingPosition[0] + partnerStartingPosition[0]) / 2;
     var centerY = (startingPosition[1] + partnerStartingPosition[1]) / 2;
     var polar = cartesianToPolar([centerX, centerY], startingPosition);
-    var targetX = 0;
-    return interpolateBetween();
-
+    var target = polarToCartesian([this.radius, polar[1]], [centerX, centerY]);
+    var interpolator = d3.interpolate(startingPosition, target);
+    return interpolator(count/this.duration);
 };
+
+var Retreat = function(duration, radius) {
+    this.duration = duration;
+    this.radius = radius;
+};
+
+Retreat.prototype.__proto__ = Action.prototype;
+
+Retreat.prototype.getCoords = function(count, pos) {
+    var initialPositionFor = this.__proto__.__proto__.getCoords.bind(this);
+    var startingPosition = initialPositionFor(0, pos);
+    var partnerStartingPosition = initialPositionFor(0, pos ^ 1);
+    var centerX = (startingPosition[0] + partnerStartingPosition[0]) / 2;
+    var centerY = (startingPosition[1] + partnerStartingPosition[1]) / 2;
+    var polar = cartesianToPolar([centerX, centerY], startingPosition);
+    var target = polarToCartesian([this.radius, polar[1]], [centerX, centerY]);
+    var interpolator = d3.interpolate(target, startingPosition);
+    return interpolator(count/this.duration);
+};
+
 
 function cartesianToPolar(center, point) {
     var dx = point[0] - center[0],

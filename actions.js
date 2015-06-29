@@ -128,7 +128,7 @@ Retreat.prototype.calculateEndingPositions = function() {
         this.endingPositions.push(target);
         this.interpolators.push(d3.interpolate(this.startingPositions[pos],target));
     }
-}
+};
 
 function cartesianToPolar(center, point) {
     var dx = point[0] - center[0],

@@ -111,7 +111,6 @@ var Hands4 = function(center, radius, dance) {
 	
 	Move.prototype.addAction = function(action) {
 		this.actions.push(action);
-		this.duration += action.duration;
 	};
 
 	Move.prototype.posTransform = function(pos) {

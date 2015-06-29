@@ -1,6 +1,7 @@
 var Move = function (duration, radius) {
     this.actions = [];
     this.defaultAction = new Wait(0, 75);
+    this.defaultAction.calculateEndingPositions();
     this.duration = duration;
     this.radius = radius;
 };
@@ -74,7 +75,7 @@ var Allemande = function (duration, direction, radius) {
     this.speed = 1 / 4;
     this.addAction(new Approach(duration/6, radius));
     this.addAction(new Spin(2*duration/3, direction, this.speed, radius));
-    this.addAction(new Retreat(duration/6, radius));
+    this.addAction(new Retreat(duration/6, 50));
 };
 
 Allemande.prototype.__proto__ = Move.prototype;

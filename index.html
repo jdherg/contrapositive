@@ -34,13 +34,14 @@ circle {
 		.text(0);
 
 	var dance = new Dance(true);
+	var radius = 100 / Math.sqrt(2);
 	dance.addMove(new Allemande(12, 1, 35));
-	dance.addMove(new Circle(6, 1, 75));
-	dance.addMove(new Circle(10, -1, 75));
+	dance.addMove(new Circle(6, 1, radius));
+	dance.addMove(new Circle(10, -1, radius));
 
 	var h4s = [];
-	h4s.push(new Hands4([250,250], 75, dance));
-	h4s.push(new Hands4([750,250], 75, dance));
+	h4s.push(new Hands4([250,250], dance));
+	h4s.push(new Hands4([750,250], dance));
 
 	var dancers = [];
 	for (var i = 0; i < h4s.length*4; i++) {

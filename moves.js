@@ -32,7 +32,13 @@ Move.prototype.currentAction = function (count) {
 };
 
 Move.prototype.addAction = function (action) {
+    var previousAction = this.actions[this.actions.length - 1];
+    if(previousAction === undefined) {
+        previousAction = this.defaultAction;
+    }
     this.actions.push(action);
+    action.startingPositions = previousAction.endingPositions;
+    action.calculateEndingPositions();
 };
 
 Move.prototype.posTransform = function (pos) {

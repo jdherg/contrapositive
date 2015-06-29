@@ -22,6 +22,17 @@ var Wait = function (duration, radius) {
 
 Wait.prototype.__proto__ = Action.prototype;
 
+Wait.prototype.calculateEndingPositions = function() {
+    if(this.startingPositions === undefined) {
+        var start = [];
+        for(var i = 0; i < 4; i++) {
+            start.push(this.getCoords(0,i));
+        }
+        this.endingPositions = start;
+    } else {
+        this.endingPositions = this.startingPositions;
+    }
+}
 
 var Rotate = function (duration, direction, speed, radius) {
     this.radius = radius;

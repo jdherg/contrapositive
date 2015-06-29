@@ -58,6 +58,25 @@ Spin.prototype.getCoords = function (count, pos) {
     return [Math.cos(theta_end) * polar[0] + cx, Math.sin(theta_end) * polar[0] + cy];
 };
 
+var Approach = function(duration, radius) {
+    this.duration = duration;
+    this.radius = radius;
+};
+
+Approach.prototype.__proto__ = Action.prototype;
+
+Approach.prototype.getCoords = function(count, pos) {
+    var initialPositionFor = this.__proto__.__proto__.getCoords.bind(this);
+    var startingPosition = initialPositionFor(0, pos);
+    var partnerStartingPosition = initialPositionFor(0, pos ^ 1);
+    var centerX = (startingPosition[0] + partnerStartingPosition[0]) / 2;
+    var centerY = (startingPosition[1] + partnerStartingPosition[1]) / 2;
+    var polar = cartesianToPolar([centerX, centerY], startingPosition);
+    var targetX = 0;
+    return interpolateBetween();
+
+};
+
 function cartesianToPolar(center, point) {
     var dx = point[0] - center[0],
         dy = point[1] - center[1],
@@ -78,3 +97,6 @@ function cartesianToPolar(center, point) {
     return [dist, theta];
 }
 
+function polarToCartesian(polar, center) {
+    return [Math.cos(polar[1]) * polar[0] + center[0], Math.sin(polar[1]) * polar[0] + center[1]];
+}

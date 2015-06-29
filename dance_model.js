@@ -1,6 +1,5 @@
 var tau = 2 * Math.PI;
 
-
 var Hands4 = function (center, radius, dance) {
     this.center = center;
     this.radius = radius;

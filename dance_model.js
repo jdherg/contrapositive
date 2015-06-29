@@ -52,10 +52,40 @@ var Hands4 = function(center, radius, dance) {
 		this.duration += move.duration;
 	};
 
-	var Move = function() {
+	var Action = function() {};
+
+	Action.prototype.getCoords = function(count,pos) {
+		var theta = tau/8 + (tau/4 * pos);
+		return [Math.cos(theta) * 75, Math.sin(theta) * 75];
+	};
+
+	Action.prototype.getX = function(count, pos) {
+		return this.getCoords(count, pos)[0];
+	};
+
+	Action.prototype.getY = function(count, pos) {
+		return this.getCoords(count, pos)[1];
+	};
+
+
+	var Wait = function(duration, radius) {
+		this.duration = duration;
+		this.radius = radius;
+	};
+
+	Wait.prototype.__proto__ = Action.prototype;
+
+
+	var Move = function(duration, radius) {
 		this.actions = [];
-		this.defaultMove = new Wait(0,75);
-		this.duration = 0;
+		this.defaultAction = new Wait(0,75);
+		this.duration = duration;
+		this.radius = radius;
+	};
+
+	Move.prototype.getCoords = function(count,pos) {
+		var theta = tau/8 + (tau/4 * pos);
+		return [Math.cos(theta) * 75, Math.sin(theta) * 75];
 	};
 
 	Move.prototype.getX = function(count, pos) {
@@ -88,33 +118,14 @@ var Hands4 = function(center, radius, dance) {
 		return pos;
 	};
 
-	var Action = function() {
-
-		Action.prototype.getCoords = function(count,pos) {
-			var theta = tau/8 + (tau/4 * pos);
-			return [Math.cos(theta) * 75, Math.sin(theta) * 75];
-		};
-
-		Action.prototype.getX = function(count, pos) {
-			return this.getCoords(count, pos)[0];
-		};
-
-		Action.prototype.getY = function(count, pos) {
-			return this.getCoords(count, pos)[1];
-		};
-
-	};
-
 	var Circle = function(duration, direction, radius) {
-		this.radius = radius;
+		Move.call(this, duration, radius);
 		this.direction = direction;
 		this.speed = 1/8;
-		this.duration = duration;
 		this.addAction(new Rotate(duration, direction, this.speed, radius));
 	};
 
-	Circle.prototype = new Move();
-	Circle.constructor = Circle;
+	Circle.prototype.__proto__ = Move.prototype;
 
 	Circle.prototype.posTransform = function(pos) {
 		var posDelta = this.direction * this.duration * this.speed * 4;
@@ -138,24 +149,15 @@ var Hands4 = function(center, radius, dance) {
 	};
 
 	var Stand = function(duration, radius) {
-		this.duration = duration;
-		this.radius = radius;
+		Move.call(this, duration, radius);
 		this.addAction(new Wait(duration, radius));
 	};
 
 	Stand.prototype.__proto__ = Move.prototype;
 
-	var Wait = function(duration, radius) {
-		this.duration = duration;
-		this.radius = radius;
-	};
-
-	Wait.prototype.__proto__ = Action.prototype;
-
 	var Allemande = function(duration, direction, radius) {
-		this.duration = duration;
+		Move.call(this, duration, radius);
 		this.direction = direction;
-		this.radius = radius;
 		this.speed = 1/4;
 		this.addAction(new Spin(duration, direction, this.speed, radius));
 	};
@@ -172,7 +174,7 @@ var Hands4 = function(center, radius, dance) {
 	Spin.prototype.__proto__ = Action.prototype;
 
 	Spin.prototype.getCoords = function(count, pos) {
-		var initialPositionFor = this.__proto__.__proto__.getCoords;
+		var initialPositionFor = this.__proto__.__proto__.getCoords.bind(this);
 		var startingPosition = initialPositionFor(0, pos);
 		var partnerStartingPosition = initialPositionFor(0, pos^1);
 		var cx = (startingPosition[0] + partnerStartingPosition[0])/2;

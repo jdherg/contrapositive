@@ -8,6 +8,8 @@ var ContraSet = function (dance, dancers) {
     this.dance = dance;
     this.dancers = dancers;
     this.hands4s = [];
+    this.top = [];
+    this.bottom = [];
     this.dancerPositions = {};
     this.constructHands4s();
 };
@@ -31,6 +33,7 @@ ContraSet.prototype.constructHands4s = function() {
     if(numberOfDancers % 2 === 1) {
         throw "Lonely dancer";
     }
+
     numberOfH4s = Math.floor(numberOfDancers / 4);
     for(i = 0; i < numberOfH4s; i++) {
         center = [250, 250+(i*200)];

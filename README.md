@@ -25,7 +25,7 @@ localhost:8000/test/SpecRunner.html
 TODO
 ----
 
-Progression
-Move.defaultAction
-Spin doesn't change positions yet
-Pull render loop out of index.html
+* Progression
+* Move.defaultAction
+* Spin doesn't change positions yet
+* Pull render loop out of index.html

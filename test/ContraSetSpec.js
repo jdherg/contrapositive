@@ -26,10 +26,10 @@ describe("ContraSet", function() {
     it("handles being out", function() {
         expect(contraSet.getGroupAndPos(0, 4)).toEqual(["top", 2]);
         expect(contraSet.getGroupAndPos(1, 4)).toEqual(["top", 3]);
-        expect(contraSet.getGroupAndPos(2, 4)).toEqual([0, 0]);
-        expect(contraSet.getGroupAndPos(3, 4)).toEqual([0, 1]);
-        expect(contraSet.getGroupAndPos(4, 4)).toEqual([1, 3]);
-        expect(contraSet.getGroupAndPos(5, 4)).toEqual([1, 2]);
+        expect(contraSet.getGroupAndPos(2, 4)).toEqual([0, 2]);
+        expect(contraSet.getGroupAndPos(3, 4)).toEqual([0, 3]);
+        expect(contraSet.getGroupAndPos(4, 4)).toEqual([0, 0]);
+        expect(contraSet.getGroupAndPos(5, 4)).toEqual([0, 1]);
         expect(contraSet.getGroupAndPos(6, 4)).toEqual(["bottom", 0]);
         expect(contraSet.getGroupAndPos(7, 4)).toEqual(["bottom", 1]);
     });

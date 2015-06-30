@@ -21,9 +21,29 @@ ContraSet.prototype.center = function (hands4) {
 };
 
 ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {
-    return [Math.floor(dancer_id / 4), dancer_id % 4];
+    var numberOfHands4s = Math.floor(this.dancers.length / 4);
+    var steps = Math.floor(this.numberOfProgressions(count) / 2);
+    var groupAndPos = [Math.floor(dancer_id / 4), dancer_id % 4];
+
+    if (groupAndPos[1] < 2) {
+        groupAndPos[0] -= steps;
+    } else {
+        groupAndPos[0] += steps;
+    }
+
+    if (groupAndPos[0] < 0) {
+        groupAndPos[0] = 0;
+        groupAndPos[1] += 2;
+    }
+
+    if (groupAndPos[0] >= numberOfHands4s) {
+        groupAndPos[0] = numberOfHands4s - 1;
+        groupAndPos[1] -= 2;
+    }
+    return groupAndPos;
 };
 
 ContraSet.prototype.numberOfProgressions = function(count) {
-    Math.floor(count / this.dance.duration);
+    return Math.floor(count / this.dance.duration);
 };
+

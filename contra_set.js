@@ -23,40 +23,41 @@ ContraSet.prototype.center = function (hands4) {
 ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {
     var numberOfHands4s = Math.floor(this.dancers.length / 4);
     var steps = Math.ceil(this.numberOfProgressions(count) / 2);
-    var groupAndPos = [Math.floor(dancer_id / 4), dancer_id % 4];
+    var group = Math.floor(dancer_id / 4);
+    var pos = dancer_id % 4;
 
-    if (groupAndPos[1] < 2) {
-        groupAndPos[0] -= steps;
+    if (pos < 2) {
+        group -= steps;
     } else {
-        groupAndPos[0] += steps;
+        group += steps;
     }
 
     // bounce at the top
-    if (groupAndPos[0] < 0) {
-        groupAndPos[0] = (-1) - groupAndPos[0];
-        groupAndPos[1] += 2;
+    if (group < 0) {
+        group = (-1) - group;
+        pos += 2;
     }
 
     // bounce at the bottom
-    if (groupAndPos[0] >= numberOfHands4s) {
-        groupAndPos[0] = (numberOfHands4s + 1) - groupAndPos[0];
-        groupAndPos[1] -= 2;
+    if (group >= numberOfHands4s) {
+        group = (numberOfHands4s + 1) - group;
+        pos -= 2;
     }
 
     if (this.numberOfProgressions(count) % 2 === 1) {
-        if (groupAndPos[1] > 1) {
-            groupAndPos[0] -= 1;
+        if (pos > 1) {
+            group -= 1;
         }
 
-        if(groupAndPos[0] === -1) {
-            groupAndPos[0] = "top";
+        if(group === -1) {
+            group = "top";
         }
 
-        if(groupAndPos[0] === numberOfHands4s - 1) {
-            groupAndPos[0] = "bottom";
+        if(group === numberOfHands4s - 1) {
+            group = "bottom";
         }
     }
-    return groupAndPos;
+    return [group, pos];
 };
 
 ContraSet.prototype.numberOfProgressions = function(count) {

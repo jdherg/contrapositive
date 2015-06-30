@@ -82,7 +82,7 @@ circle {
 
 		if(previousMove !== currentMove) {
 			dancers.forEach(function(dancer){
-				dancerInfo = dancer.contraSet.getH4AndPos(dancer.id);
+				dancerInfo = dancer.contraSet.getGroupAndPos(dancer.id);
 				dancer.contraSet.dancerPositions[dancer.id][1] = previousMove.posTransform(dancerInfo[1]);
 			});
 			previousMove = currentMove;

@@ -7,56 +7,40 @@ var Dancer = function(id) {
 var ContraSet = function (dance, dancers) {
     this.dance = dance;
     this.dancers = dancers;
-    this.hands4s = [];
     this.top = [];
     this.bottom = [];
     this.dancerPositions = {};
-    this.constructHands4s();
+    this.groupDancers();
 };
 
 ContraSet.prototype.getX = function (count, dancer) {
-    var dancerInfo = this.getH4AndPos(dancer.id);
-    return dancerInfo[0].getX(count, dancerInfo[1]);
+    var dancerInfo = this.getGroupAndPos(dancer.id);
+    return this.center(dancerInfo[0])[0] + this.dance.getX(count, dancerInfo[1]);
 };
 
 ContraSet.prototype.getY = function (count, dancer) {
-    var dancerInfo = this.getH4AndPos(dancer.id);
-    return dancerInfo[0].getY(count, dancerInfo[1]);
+    var dancerInfo = this.getGroupAndPos(dancer.id);
+    return this.center(dancerInfo[0])[1] + this.dance.getY(count, dancerInfo[1]);
 };
 
-ContraSet.prototype.getH4AndPos = function(dancer_id) {
+ContraSet.prototype.center = function (hands4) {
+    return [250, 250+(hands4*200)];
+};
+
+ContraSet.prototype.getGroupAndPos = function(dancer_id) {
     return this.dancerPositions[dancer_id];
 };
 
-ContraSet.prototype.constructHands4s = function() {
+ContraSet.prototype.groupDancers = function() {
     numberOfDancers = dancers.length;
     if(numberOfDancers % 2 === 1) {
         throw "Lonely dancer";
     }
 
-    numberOfH4s = Math.floor(numberOfDancers / 4);
-    for(i = 0; i < numberOfH4s; i++) {
-        center = [250, 250+(i*200)];
-        this.hands4s.push(new Hands4(center, dance));
-    }
-
     for(pos = 0; pos < numberOfDancers; pos++) {
         this.dancers[pos].contraSet = this;
-        this.dancerPositions[this.dancers[pos].id] = [this.hands4s[Math.floor(pos / 4)], pos % 4]
+        this.dancerPositions[this.dancers[pos].id] = [Math.floor(pos / 4), pos % 4]
     }
-};
-
-var Hands4 = function (center, dance) {
-    this.center = center;
-    this.dance = dance;
-};
-
-Hands4.prototype.getX = function (count, pos) {
-    return this.center[0] + this.dance.getX(count, pos);
-};
-
-Hands4.prototype.getY = function (count, pos) {
-    return this.center[1] + this.dance.getY(count, pos);
 };
 
 var Dance = function (repeatFlag) {

@@ -10,7 +10,6 @@ var ContraSet = function (dance, dancers) {
     this.top = [];
     this.bottom = [];
     this.dancerPositions = {};
-    this.groupDancers();
 };
 
 ContraSet.prototype.getX = function (count, dancer) {
@@ -27,20 +26,12 @@ ContraSet.prototype.center = function (hands4) {
     return [250, 250+(hands4*200)];
 };
 
-ContraSet.prototype.getGroupAndPos = function(dancer_id) {
-    return this.dancerPositions[dancer_id];
+ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {
+    return [Math.floor(dancer_id / 4), dancer_id % 4];
 };
 
-ContraSet.prototype.groupDancers = function() {
-    numberOfDancers = dancers.length;
-    if(numberOfDancers % 2 === 1) {
-        throw "Lonely dancer";
-    }
-
-    for(pos = 0; pos < numberOfDancers; pos++) {
-        this.dancers[pos].contraSet = this;
-        this.dancerPositions[this.dancers[pos].id] = [Math.floor(pos / 4), pos % 4]
-    }
+ContraSet.prototype.numberOfProgressions = function(count) {
+    Math.floor(count / this.dance.duration);
 };
 
 var Dance = function (repeatFlag) {

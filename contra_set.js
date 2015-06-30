@@ -31,13 +31,15 @@ ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {
         groupAndPos[0] += steps;
     }
 
+    // bounce at the top
     if (groupAndPos[0] < 0) {
-        groupAndPos[0] = 0;
+        groupAndPos[0] = (-1) - groupAndPos[0];
         groupAndPos[1] += 2;
     }
 
+    // bounce at the bottom
     if (groupAndPos[0] >= numberOfHands4s) {
-        groupAndPos[0] = numberOfHands4s - 1;
+        groupAndPos[0] = (numberOfHands4s + 1) - groupAndPos[0];
         groupAndPos[1] -= 2;
     }
     return groupAndPos;

@@ -26,6 +26,7 @@ TODO
 ----
 
 * Progression
+* Multiple sets
 * Move.defaultAction
 * Spin doesn't change positions yet
 * Pull render loop out of index.html

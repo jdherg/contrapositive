@@ -33,7 +33,7 @@ ContraSet.prototype.constructHands4s = function() {
     }
     numberOfH4s = Math.floor(numberOfDancers / 4);
     for(i = 0; i < numberOfH4s; i++) {
-        center = [250 + (i*200), 250];
+        center = [250, 250+(i*200)];
         this.hands4s.push(new Hands4(center, dance));
     }
 

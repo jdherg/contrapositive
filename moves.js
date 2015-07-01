@@ -1,7 +1,11 @@
-var Move = function (duration, radius) {
+var Move = function (duration, radius, previousMoveEnding) {
     this.actions = [];
-    this.defaultAction = new Wait(0, 75);
-    this.defaultAction.calculateEndingPositions();
+    if(this.previousMoveEnding === undefined) {
+        var initialAction = new Wait(0, 75);
+        initialAction.calculateEndingPositions();
+        previousMoveEnding = initialAction.endingPositions;
+    }
+    this.previousMoveEnding = previousMoveEnding;
     this.duration = duration;
     this.radius = radius;
 };
@@ -34,16 +38,16 @@ Move.prototype.currentAction = function (count) {
 
 Move.prototype.addAction = function (action) {
     var previousAction = this.actions[this.actions.length - 1];
+    var previousEndingPositions = [];
     if(previousAction === undefined) {
-        previousAction = this.defaultAction;
+        previousEndingPositions = this.previousMoveEnding;
+    } else {
+        previousEndingPositions = previousAction.endingPositions;
     }
     this.actions.push(action);
-    action.startingPositions = previousAction.endingPositions;
+    action.startingPositions = previousEndingPositions;
     action.calculateEndingPositions();
-};
-
-Move.prototype.posTransform = function (pos) {
-    return pos;
+    this.endingPositions = action.endingPositions;
 };
 
 var Stand = function (duration, radius) {
@@ -53,8 +57,8 @@ var Stand = function (duration, radius) {
 
 Stand.prototype.__proto__ = Move.prototype;
 
-var Circle = function (duration, direction, radius) {
-    Move.call(this, duration, radius);
+var Circle = function (duration, direction, radius, previousMoveEnding) {
+    Move.call(this, duration, radius, previousMoveEnding);
     this.direction = direction;
     this.speed = 1 / 8;
     this.addAction(new Rotate(duration, direction, this.speed, radius));
@@ -62,15 +66,8 @@ var Circle = function (duration, direction, radius) {
 
 Circle.prototype.__proto__ = Move.prototype;
 
-Circle.prototype.posTransform = function (pos) {
-    var posDelta = this.direction * this.duration * this.speed * 4;
-    pos = (pos + posDelta) % 4;
-    pos += pos < 0 ? 4 : 0;
-    return pos;
-};
-
-var Allemande = function (duration, direction, radius) {
-    Move.call(this, duration, radius);
+var Allemande = function (duration, direction, radius, previousMoveEnding) {
+    Move.call(this, duration, radius, previousMoveEnding);
     this.direction = direction;
     this.speed = 1 / 4;
     this.addAction(new Approach(duration/6, radius));

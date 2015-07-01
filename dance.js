@@ -38,4 +38,5 @@ Dance.prototype.currentMove = function (count) {
 Dance.prototype.addMove = function (move) {
     this.moves.push(move);
     this.duration += move.duration;
+    this.lastMoveEnding = move.endingPositions;
 };

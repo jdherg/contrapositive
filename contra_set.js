@@ -4,18 +4,15 @@ var ContraSet = function (dance, dancers) {
     for(var i = 0; i < this.dancers.length; i++) {
         this.dancers[i].contraSet = this;
     }
-    this.top = [];
-    this.bottom = [];
-    this.dancerPositions = {};
 };
 
 ContraSet.prototype.getX = function (count, dancer) {
-    var dancerInfo = this.getGroupAndPos(dancer.id);
+    var dancerInfo = this.getGroupAndPos(dancer.id, count);
     return this.center(dancerInfo[0])[0] + this.dance.getX(count, dancerInfo[1]);
 };
 
 ContraSet.prototype.getY = function (count, dancer) {
-    var dancerInfo = this.getGroupAndPos(dancer.id);
+    var dancerInfo = this.getGroupAndPos(dancer.id, count);
     return this.center(dancerInfo[0])[1] + this.dance.getY(count, dancerInfo[1]);
 };
 

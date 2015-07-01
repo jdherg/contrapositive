@@ -36,9 +36,9 @@ circle {
 
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
-	dance.addMove(new Allemande(12, 1, 35));
-	dance.addMove(new Circle(6, 1, radius));
-	dance.addMove(new Circle(10, -1, radius));
+	dance.addMove(new Allemande(12, 1, 35, dance.lastMoveEnding));
+	dance.addMove(new Circle(6, 1, radius, dance.lastMoveEnding));
+	dance.addMove(new Circle(10, -1, radius, dance.lastMoveEnding));
 
 	var dancers = [];
 	for (var i = 0; i < 8; i++) {
@@ -79,15 +79,6 @@ circle {
 
 	function animate(elapsed) {
 		var count = elapsed/1000 * counts_per_second;
-		var currentMove = dance.currentMove(count)[0];
-
-		if(previousMove !== currentMove) {
-			dancers.forEach(function(dancer){
-				dancerInfo = dancer.contraSet.getGroupAndPos(dancer.id);
-				dancer.contraSet.dancerPositions[dancer.id][1] = previousMove.posTransform(dancerInfo[1]);
-			});
-			previousMove = currentMove;
-		}
 		draw(count);
 	}
 

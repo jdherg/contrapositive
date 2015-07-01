@@ -1,6 +1,6 @@
 var Move = function (duration, radius, previousMoveEnding) {
     this.actions = [];
-    if(this.previousMoveEnding === undefined) {
+    if(previousMoveEnding === undefined) {
         var initialAction = new Wait(0, radius);
         initialAction.calculateEndingPositions();
         previousMoveEnding = initialAction.endingPositions;

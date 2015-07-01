@@ -16,7 +16,7 @@ Action.prototype.getY = function (count, pos) {
 
 Action.prototype.calculateEndingPositions = function() {
     throw "Not implemented.";
-}
+};
 
 
 var Wait = function (duration, radius) {
@@ -36,7 +36,7 @@ Wait.prototype.calculateEndingPositions = function() {
     } else {
         this.endingPositions = this.startingPositions;
     }
-}
+};
 
 var Rotate = function (duration, direction, speed, radius) {
     this.radius = radius;
@@ -63,7 +63,7 @@ Rotate.prototype.calculateEndingPositions = function() {
         var theta = init_theta + theta_delta;
         this.endingPositions.push(polarToCartesian([this.radius, theta],[0,0]));
     }
-}
+};
 
 var Spin = function (duration, direction, speed, radius) {
     this.duration = duration;
@@ -87,7 +87,7 @@ Spin.prototype.getCoords = function (count, pos) {
 
 Spin.prototype.calculateEndingPositions = function() {
     this.endingPositions = this.startingPositions;
-}
+};
 
 var Approach = function(duration, radius) {
     this.duration = duration;
@@ -112,7 +112,7 @@ Approach.prototype.calculateEndingPositions = function() {
         this.endingPositions.push(target);
         this.interpolators.push(d3.interpolate(this.startingPositions[pos],target));
     }
-}
+};
 
 var Retreat = function(duration, radius) {
     this.duration = duration;

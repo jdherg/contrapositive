@@ -46,20 +46,12 @@ circle {
 	}
 	var contraSet = new ContraSet(dance, dancers);
 
+	var colors = d3.scale.category10();
 	var dots = svg.selectAll("circle")
 			.data(dancers)
 			.enter().append("circle")
 			.attr("fill", function(d) {
-				switch(d.id % 4) {
-					case 0:
-						return "red";
-					case 1:
-						return "blue";
-					case 2:
-						return "green";
-					case 3:
-						return "yellow";
-				}
+				return colors(d.id);
 			});
 
 

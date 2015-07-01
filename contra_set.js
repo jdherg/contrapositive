@@ -22,7 +22,7 @@ ContraSet.prototype.getX = function (count, dancer) {
 ContraSet.prototype.getY = function (count, dancer) {
     var dancerInfo = this.getGroupAndPos(dancer.id, count);
     if(dancerInfo[0] === "bottom") {
-        return 100+( (this.dancers.length/4 - 1) * 200 + 100);
+        return 200+( (this.dancers.length/4 - 1) * 200);
     } else if(dancerInfo[0] === "top"){
         return 100;
     } else {

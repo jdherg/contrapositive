@@ -7,7 +7,7 @@ var Dancer = function(id) {
 var Dance = function (repeatFlag) {
     this.repeat = repeatFlag;
     this.moves = [];
-    this.defaultMove = new Stand(0, 75);
+    this.defaultMove = new Stand(0, 100 / Math.sqrt(2));
     this.duration = 0;
 };
 

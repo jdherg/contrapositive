@@ -1,7 +1,7 @@
 var Move = function (duration, radius, previousMoveEnding) {
     this.actions = [];
     if(this.previousMoveEnding === undefined) {
-        var initialAction = new Wait(0, 75);
+        var initialAction = new Wait(0, radius);
         initialAction.calculateEndingPositions();
         previousMoveEnding = initialAction.endingPositions;
     }
@@ -12,7 +12,7 @@ var Move = function (duration, radius, previousMoveEnding) {
 
 Move.prototype.getCoords = function (count, pos) {
     var theta = tau / 8 + (tau / 4 * pos);
-    return [Math.cos(theta) * 75, Math.sin(theta) * 75];
+    return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
 };
 
 Move.prototype.getX = function (count, pos) {

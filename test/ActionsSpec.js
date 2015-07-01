@@ -16,6 +16,17 @@ describe("Actions", function() {
 
     var directlyNortheast = cartesianToPolar([0, 0], [1, 1]);
     expectAllCloseTo(directlyNortheast, [Math.sqrt(2), tau/8]);
+
+    var directlyNorthwest = cartesianToPolar([0,0], [-1, 1]);
+    expectAllCloseTo(directlyNorthwest, [Math.sqrt(2), 3 * tau / 8])
+
+    var directlySouthwest = cartesianToPolar([0,0], [-1, -1]);
+    expectAllCloseTo(directlySouthwest, [Math.sqrt(2), 5 * tau / 8])
+
+    var directlySoutheast = cartesianToPolar([0,0], [1, -1]);
+    expectAllCloseTo(directlySoutheast, [Math.sqrt(2), -1 * tau / 8])
+
+
   });
 
   it("converts polar coordinates to cartesian", function () {
@@ -26,8 +37,13 @@ describe("Actions", function() {
     expectAllCloseTo(directlyNortheast, [1,1]);
   });
 
+  it("converts polar coordinates to cartesian with theta > tau", function () {
+    var directlyNortheast = polarToCartesian([Math.sqrt(2), 9 * tau / 8], [0,0]);
+    expectAllCloseTo(directlyNortheast, [1,1]);
+  })
+
   it("has appropriate Wait starting position defaults", function() {
-    var wait = new Wait(1,75);
+    var wait = new Wait(1,100 / Math.sqrt(2));
     wait.calculateEndingPositions();
     var startingPositions = [];
     for(var i = 0; i < 4; i++) {

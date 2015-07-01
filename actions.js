@@ -3,7 +3,7 @@ var Action = function () {
 
 Action.prototype.getCoords = function (count, pos) {
     var theta = tau / 8 + (tau / 4 * pos);
-    return [Math.cos(theta) * 75, Math.sin(theta) * 75];
+    return [Math.cos(theta) * 100 / Math.sqrt(2), Math.sin(theta) * 100 / Math.sqrt(2)];
 };
 
 Action.prototype.getX = function (count, pos) {
@@ -48,12 +48,21 @@ var Rotate = function (duration, direction, speed, radius) {
 Rotate.prototype.__proto__ = Action.prototype;
 
 Rotate.prototype.getCoords = function (count, pos) {
-    var theta = tau / 8 + (tau / 4 * pos) + this.direction * this.speed * count * tau;
+    var startingPosition = this.startingPositions[pos];
+    var theta_delta = tau * this.speed * this.direction * count;
+    var init_theta = cartesianToPolar([0,0], startingPosition)[1];
+    var theta = init_theta + theta_delta;
     return [Math.cos(theta) * this.radius, Math.sin(theta) * this.radius];
 };
 
 Rotate.prototype.calculateEndingPositions = function() {
-    this.endingPositions = this.startingPositions;
+    this.endingPositions = [];
+    var theta_delta = tau * this.speed * this.direction * this.duration;
+    for(var i = 0; i < 4; i++) {
+        var init_theta = cartesianToPolar([0,0], this.startingPositions[i])[1];
+        var theta = init_theta + theta_delta;
+        this.endingPositions.push(polarToCartesian([this.radius, theta],[0,0]));
+    }
 }
 
 var Spin = function (duration, direction, speed, radius) {
@@ -136,17 +145,10 @@ function cartesianToPolar(center, point) {
         dist = Math.sqrt(dx * dx + dy * dy),
         sin = dy / dist,
         cos = dx / dist,
-        acos = Math.acos(cos);
-    var theta = 0;
-    if (sin < 0) {
-        theta = -1 * acos;
-    } else {
-        if (cos < 0) {
-            theta = 2 * Math.PI - acos;
-        } else {
-            theta = acos;
+        theta = Math.atan(dy/dx);
+        if(dx < 0) {
+            theta += Math.PI 
         }
-    }
     return [dist, theta];
 }
 

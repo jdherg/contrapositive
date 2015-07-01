@@ -18,10 +18,10 @@ describe("Actions", function() {
     expectAllCloseTo(directlyNortheast, [Math.sqrt(2), tau/8]);
 
     var directlyNorthwest = cartesianToPolar([0,0], [-1, 1]);
-    expectAllCloseTo(directlyNorthwest, [Math.sqrt(2), 3 * tau / 8])
+    expectAllCloseTo(directlyNorthwest, [Math.sqrt(2), 3 * tau / 8]);
 
     var directlySouthwest = cartesianToPolar([0,0], [-1, -1]);
-    expectAllCloseTo(directlySouthwest, [Math.sqrt(2), 5 * tau / 8])
+    expectAllCloseTo(directlySouthwest, [Math.sqrt(2), -3 * tau / 8]);
 
     var directlySoutheast = cartesianToPolar([0,0], [1, -1]);
     expectAllCloseTo(directlySoutheast, [Math.sqrt(2), -1 * tau / 8])

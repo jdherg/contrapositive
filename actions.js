@@ -143,13 +143,8 @@ function cartesianToPolar(center, point) {
     var dx = point[0] - center[0],
         dy = point[1] - center[1],
         dist = Math.sqrt(dx * dx + dy * dy),
-        sin = dy / dist,
-        cos = dx / dist,
-        theta = Math.atan(dy/dx);
-        if(dx < 0) {
-            theta += Math.PI 
-        }
-    return [dist, theta];
+        atan = Math.atan2(dy, dx);
+    return [dist, atan];
 }
 
 function polarToCartesian(polar, center) {

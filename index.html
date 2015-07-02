@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<html>
 <head>
 	<title>Contrapositive</title>
 <style>
@@ -20,9 +21,8 @@ button {
 #count-text {
 	margin-left: 10px;
 }
-
-
 </style>
+
 <link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
 <script src="lib/d3.slider/d3.slider.js" charset="utf-8"></script>
@@ -53,7 +53,7 @@ button {
 	for (var i = 0; i < 12; i++) {
 		dancers.push(new Dancer(i));
 	}
-	var contraSet = new ContraSet(dance, dancers);
+	var contraSet = new ContraSet(dance, dancers, 125);
 
 	var svg = d3.select("body").append("svg")
 			.classed("dance-floor", true)
@@ -91,14 +91,14 @@ button {
 			value = !playing;
 		}
 		playing = value;
-		d3.select("button").text(playing ? "Pause" : "Play");
+		d3.select("button").text(playing ? "❚❚ Pause" : "▶ Play");
 		if(value) {
 			d3.timer(createAnimate(slider.value()));
 		}
 	};
 
 	var pauseButton = d3.select("body").append("button")
-			.text("Pause").on("click", play);
+			.text("❚❚ Pause").on("click", play);
 
 	var count_text = d3.select("body").append("span")
 		.attr("id", "count-text")
@@ -134,3 +134,4 @@ button {
 	}
 
 </script>
+</html>

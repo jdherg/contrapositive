@@ -1,6 +1,7 @@
-var ContraSet = function (dance, dancers) {
+var ContraSet = function (dance, dancers, cx) {
     this.dance = dance;
     this.dancers = dancers;
+    this.cx = cx;
     for(var i = 0; i < this.dancers.length; i++) {
         this.dancers[i].contraSet = this;
     }
@@ -10,9 +11,9 @@ ContraSet.prototype.getX = function (count, dancer) {
     var dancerInfo = this.getGroupAndPos(dancer.id, count);
     if(dancerInfo[0] === "top" || dancerInfo[0] === "bottom") {
         if(dancerInfo[1] === 1 || dancerInfo[1] === 2) {
-            return 200;
+            return this.cx - 50;
         } else {
-            return 300;
+            return this.cx + 50;
         }
     } else {
         return this.center(dancerInfo[0])[0] + this.dance.getX(count, dancerInfo[1]);
@@ -32,7 +33,7 @@ ContraSet.prototype.getY = function (count, dancer) {
 };
 
 ContraSet.prototype.center = function (hands4) {
-    return [250, 125+(hands4*200)];
+    return [this.cx, 125+(hands4*200)];
 };
 
 ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {

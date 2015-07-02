@@ -63,6 +63,7 @@ button {
 	var fullDanceLength = dance.duration * dancers.length;
 
 	var seek = function(e, val) {
+		play(false);
 		draw(val);
 	};
 
@@ -76,12 +77,16 @@ button {
 			.attr("id", "slider")
 			.call(slider);
 
-	var pause = function() {
-		playing = !playing;
+	var play = function(value) {
+		if(value === undefined) {
+			value = !playing;
+		}
+		playing = value;
+		d3.select("button").text(playing ? "Pause" : "Play");
 	};
 
 	var pauseButton = d3.select("body").append("button")
-			.text("Pause").on("click", pause);
+			.text("Pause").on("click", play);
 
 	var previousMove = dance.currentMove(0)[0];
 	draw(0);

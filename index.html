@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>Contrapositive</title>
+<link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
 <style>
 
 .dance-floor {
@@ -21,9 +22,12 @@ button {
 #count-text {
 	margin-left: 10px;
 }
-</style>
 
-<link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
+#slider {
+	margin-top: 10px;
+}
+
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
 <script src="lib/d3.slider/d3.slider.js" charset="utf-8"></script>
 <script src="actions.js" charset="utf-8"></script>
@@ -86,7 +90,7 @@ button {
 			.on("slide", seek);
 
 	var count_display = d3.select("body").append("div")
-			.attr("width", width)
+			.style("width", width + "px")
 			.attr("id", "slider")
 			.call(slider);
 

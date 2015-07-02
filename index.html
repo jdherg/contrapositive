@@ -4,7 +4,7 @@
 	<title>Contrapositive</title>
 <style>
 
-svg {
+.dance-floor {
 	border: solid 1px #000;
 }
 
@@ -14,7 +14,9 @@ circle {
 }
 
 </style>
+<link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+<script src="lib/d3.slider/d3.slider.js" charset="utf-8"></script>
 <script src="actions.js" charset="utf-8"></script>
 <script src="moves.js" charset="utf-8"></script>
 <script src="dance.js" charset="utf-8"></script>
@@ -29,24 +31,21 @@ circle {
 	var counts_per_second = 4,
 		taus_per_count = 1/8;
 
-	var svg = d3.select("body").append("svg")
-		.attr("width", width)
-		.attr("height", height);
-
-	var count_display = d3.select("body").append("p")
-		.text(0);
-
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
-	dance.addMove(new Allemande(12, 1, 35, dance.lastMoveEnding));
+	dance.addMove(new Allemande(6, 1, 35, dance.lastMoveEnding));
 	dance.addMove(new Circle(6, 1, radius, dance.lastMoveEnding));
-	dance.addMove(new Circle(10, -1, radius, dance.lastMoveEnding));
 
 	var dancers = [];
 	for (var i = 0; i < 8; i++) {
 		dancers.push(new Dancer(i));
 	}
 	var contraSet = new ContraSet(dance, dancers);
+
+	var svg = d3.select("body").append("svg")
+			.classed("dance-floor", true)
+			.attr("width", width)
+			.attr("height", height);
 
 	var colors = d3.scale.category10();
 	var dots = svg.selectAll("circle")
@@ -56,6 +55,15 @@ circle {
 				return colors(d.id);
 			});
 
+	var fullDanceLength = dance.duration * dancers.length;
+
+	var axis = d3.svg.axis();
+
+	var slider = d3.slider().axis(axis).min(0).max(fullDanceLength);
+	var count_display = d3.select("body").append("div")
+			.attr("width", width)
+			.attr("id", "slider")
+			.call(slider);
 
 	var previousMove = dance.currentMove(0)[0];
 	draw(0);
@@ -68,7 +76,7 @@ circle {
 				.attr("cy", function(d) {
 					return d.contraSet.getY(count, d);
 				});
-				count_display.text(Math.floor(count) % (dance.duration * dancers.length));
+		slider.value(count % fullDanceLength);
 	}
 
 	function animate(elapsed) {

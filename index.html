@@ -38,6 +38,7 @@ button {
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
 	var playing = true;
+
 	dance.addMove(new Allemande(6, 1, 35, dance.lastMoveEnding));
 	dance.addMove(new Circle(6, 1, radius, dance.lastMoveEnding));
 
@@ -83,6 +84,9 @@ button {
 		}
 		playing = value;
 		d3.select("button").text(playing ? "Pause" : "Play");
+		if(value) {
+			d3.timer(createAnimate(slider.value()));
+		}
 	};
 
 	var pauseButton = d3.select("body").append("button")
@@ -90,7 +94,7 @@ button {
 
 	var previousMove = dance.currentMove(0)[0];
 	draw(0);
-	d3.timer(animate);
+	d3.timer(createAnimate(0));
 
 	function draw(count) {
 				dots.attr("cx", function(d) {
@@ -102,10 +106,15 @@ button {
 		slider.value(count % fullDanceLength);
 	}
 
-	function animate(elapsed) {
-		var count = elapsed/1000 * counts_per_second;
-		if(playing) {
-			draw(count);
+	function createAnimate(initial) {
+		return function(elapsed) {
+			var count = initial + elapsed/1000 * counts_per_second;
+			if(playing) {
+				draw(count);
+			} else {
+				return true;
+			}
 		}
 	}
+
 </script>

@@ -31,3 +31,4 @@ TODO
 * Spin doesn't change positions yet
 * Pull render loop out of index.html
 * Progression mid-dance
+* Fix axis formatting

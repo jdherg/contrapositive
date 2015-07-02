@@ -70,9 +70,9 @@ var Allemande = function (duration, direction, radius, previousMoveEnding) {
     Move.call(this, duration, radius, previousMoveEnding);
     this.direction = direction;
     this.speed = 1 / 4;
-    this.addAction(new Approach(duration/6, radius));
-    this.addAction(new Spin(2*duration/3, direction, this.speed, radius));
-    this.addAction(new Retreat(duration/6, 50));
+    this.addAction(new Approach(1, radius));
+    this.addAction(new Spin(duration - 2, direction, this.speed, radius));
+    this.addAction(new Retreat(1, 50));
 };
 
 Allemande.prototype.__proto__ = Move.prototype;

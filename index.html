@@ -17,6 +17,11 @@ button {
 	margin-top: 50px;
 }
 
+#count-text {
+	margin-left: 10px;
+}
+
+
 </style>
 <link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
@@ -27,6 +32,7 @@ button {
 <script src="contra_set.js" charset="utf-8"></script>
 </head>
 <body>
+</body>
 <script>
 	var width = 700,
 		height = 800,
@@ -78,6 +84,7 @@ button {
 			.attr("id", "slider")
 			.call(slider);
 
+
 	var play = function(value) {
 		if(value === undefined) {
 			value = !playing;
@@ -92,6 +99,10 @@ button {
 	var pauseButton = d3.select("body").append("button")
 			.text("Pause").on("click", play);
 
+	var count_text = d3.select("body").append("span")
+		.attr("id", "count-text")
+		.text("0");
+
 	var previousMove = dance.currentMove(0)[0];
 	draw(0);
 	d3.timer(createAnimate(0));
@@ -104,6 +115,8 @@ button {
 					return d.contraSet.getY(count, d);
 				});
 		slider.value(count % fullDanceLength);
+		count_text.text(Math.floor(count));
+
 	}
 
 	function createAnimate(initial) {

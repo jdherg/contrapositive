@@ -34,7 +34,7 @@ button {
 <body>
 </body>
 <script>
-	var width = 500,
+	var width = 750,
 		height = 650,
 		tau = 2*Math.PI;
 
@@ -50,11 +50,12 @@ button {
 	dance.addMove(new Circle(4, -1, radius, dance.lastMoveEnding));
 
 	var dancers = [];
-	for (var i = 0; i < 24; i++) {
+	for (var i = 0; i < 36; i++) {
 		dancers.push(new Dancer(i % 12));
 	}
 	var firstSet = new ContraSet(dance, dancers.slice(0,12), 125);
 	var secondSet = new ContraSet(dance, dancers.slice(12,24), 375);
+	var thirdSet = new ContraSet(dance, dancers.slice(24,36), 625);
 
 	var svg = d3.select("body").append("svg")
 			.classed("dance-floor", true)

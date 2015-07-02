@@ -1,6 +1,7 @@
 var tau = 2 * Math.PI;
 
-var Dancer = function(id) {
+var Dancer = function(id, set) {
+    this.contraSet = set;
     this.id = id;
 };
 

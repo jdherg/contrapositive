@@ -41,6 +41,7 @@ button {
 	var counts_per_second = 4,
 		taus_per_count = 1/8;
 
+
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
 	var playing = true;
@@ -49,13 +50,15 @@ button {
 	dance.addMove(new Circle(8, 1, radius, dance.lastMoveEnding));
 	dance.addMove(new Circle(4, -1, radius, dance.lastMoveEnding));
 
+	var dancerCount = 12;
+	var setCount = 3;
+
+	var contraSets = [];
 	var dancers = [];
-	for (var i = 0; i < 36; i++) {
-		dancers.push(new Dancer(i % 12));
+	for(var i = 0; i < setCount; i++) {
+		contraSets.push(new ContraSet(dance, dancerCount, 125 + (i * 250)));
+		Array.prototype.push.apply(dancers,contraSets[i].dancers);
 	}
-	var firstSet = new ContraSet(dance, dancers.slice(0,12), 125);
-	var secondSet = new ContraSet(dance, dancers.slice(12,24), 375);
-	var thirdSet = new ContraSet(dance, dancers.slice(24,36), 625);
 
 	var svg = d3.select("body").append("svg")
 			.classed("dance-floor", true)
@@ -70,7 +73,7 @@ button {
 				return colors(d.id);
 			});
 
-	var fullDanceLength = dance.duration * firstSet.dancers.length;
+	var fullDanceLength = dance.duration * dancerCount;
 
 	var seek = function(e, val) {
 		play(false);

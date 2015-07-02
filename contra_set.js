@@ -1,10 +1,10 @@
-var ContraSet = function (dance, dancers, cx) {
+var ContraSet = function (dance, dancer_count, cx) {
     this.dance = dance;
-    this.dancers = dancers;
-    this.cx = cx;
-    for(var i = 0; i < this.dancers.length; i++) {
-        this.dancers[i].contraSet = this;
+    this.dancers = [];
+    for(var i = 0; i < dancer_count; i++) {
+        this.dancers.push(new Dancer(i, this));
     }
+    this.cx = cx;
 };
 
 ContraSet.prototype.getX = function (count, dancer) {

@@ -35,7 +35,7 @@ button {
 </body>
 <script>
 	var width = 700,
-		height = 800,
+		height = 650,
 		tau = 2*Math.PI;
 
 	var counts_per_second = 4,
@@ -50,7 +50,7 @@ button {
 	dance.addMove(new Circle(4, -1, radius, dance.lastMoveEnding));
 
 	var dancers = [];
-	for (var i = 0; i < 8; i++) {
+	for (var i = 0; i < 12; i++) {
 		dancers.push(new Dancer(i));
 	}
 	var contraSet = new ContraSet(dance, dancers);
@@ -60,7 +60,7 @@ button {
 			.attr("width", width)
 			.attr("height", height);
 
-	var colors = d3.scale.category10();
+	var colors = d3.scale.category20();
 	var dots = svg.selectAll("circle")
 			.data(dancers)
 			.enter().append("circle")

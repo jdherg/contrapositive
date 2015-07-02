@@ -22,9 +22,9 @@ ContraSet.prototype.getX = function (count, dancer) {
 ContraSet.prototype.getY = function (count, dancer) {
     var dancerInfo = this.getGroupAndPos(dancer.id, count);
     if(dancerInfo[0] === "bottom") {
-        return 300 + ( (this.dancers.length/4 - 1) * 200);
+        return 175 + ( (this.dancers.length/4 - 1) * 200);
     } else if(dancerInfo[0] === "top"){
-        return 200;
+        return 75;
     } else {
         var topOffset = (this.numberOfProgressions(count) % 2) * 100;
         return this.center(dancerInfo[0])[1] + this.dance.getY(count, dancerInfo[1]) + topOffset;
@@ -32,7 +32,7 @@ ContraSet.prototype.getY = function (count, dancer) {
 };
 
 ContraSet.prototype.center = function (hands4) {
-    return [250, 250+(hands4*200)];
+    return [250, 125+(hands4*200)];
 };
 
 ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {

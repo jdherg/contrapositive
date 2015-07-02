@@ -48,7 +48,7 @@ button {
 
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
-	var playing = true;
+	var playing = false;
 
 	dance.addMove(new Allemande(8, 1, 35, dance.lastMoveEnding));
 	dance.addMove(new Circle(8, 1, radius, dance.lastMoveEnding));
@@ -107,7 +107,7 @@ button {
 	};
 
 	var pauseButton = d3.select("body").append("button")
-			.text("❚❚ Pause").on("click", play);
+			.text("▶ Play").on("click", play);
 
 	var count_text = d3.select("body").append("span")
 		.attr("id", "count-text")

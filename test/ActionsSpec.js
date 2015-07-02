@@ -40,7 +40,7 @@ describe("Actions", function() {
   it("converts polar coordinates to cartesian with theta > tau", function () {
     var directlyNortheast = polarToCartesian([Math.sqrt(2), 9 * tau / 8], [0,0]);
     expectAllCloseTo(directlyNortheast, [1,1]);
-  })
+  });
 
   it("has appropriate Wait starting position defaults", function() {
     var wait = new Wait(1,100 / Math.sqrt(2));

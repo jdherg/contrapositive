@@ -28,14 +28,12 @@ Wait.prototype.__proto__ = Action.prototype;
 
 Wait.prototype.calculateEndingPositions = function() {
     if(this.startingPositions === undefined) {
-        var start = [];
-        for(var i = 0; i < 4; i++) {
-            start.push(this.getCoords(0,i));
+        this.startingPositions = [];
+        for (var i = 0; i < 4; i++) {
+            this.startingPositions.push(this.getCoords(0, i));
         }
-        this.endingPositions = start;
-    } else {
-        this.endingPositions = this.startingPositions;
     }
+    this.endingPositions = this.startingPositions;
 };
 
 var Rotate = function (duration, direction, speed, radius) {
@@ -57,11 +55,8 @@ Rotate.prototype.getCoords = function (count, pos) {
 
 Rotate.prototype.calculateEndingPositions = function() {
     this.endingPositions = [];
-    var theta_delta = tau * this.speed * this.direction * this.duration;
     for(var i = 0; i < 4; i++) {
-        var init_theta = cartesianToPolar([0,0], this.startingPositions[i])[1];
-        var theta = init_theta + theta_delta;
-        this.endingPositions.push(polarToCartesian([this.radius, theta],[0,0]));
+        this.endingPositions.push(this.getCoords(this.duration, i));
     }
 };
 
@@ -87,15 +82,8 @@ Spin.prototype.getCoords = function (count, pos) {
 
 Spin.prototype.calculateEndingPositions = function() {
     this.endingPositions = [];
-    var theta_delta = tau * this.speed * this.direction * this.duration;
     for(var i = 0; i < 4; i++) {
-        var startingPosition = this.startingPositions[i];
-        var partnerStartingPosition = this.startingPositions[i ^ 1];
-        var cx = (startingPosition[0] + partnerStartingPosition[0]) / 2;
-        var cy = (startingPosition[1] + partnerStartingPosition[1]) / 2;
-        var init_theta = cartesianToPolar([cx,cy], startingPosition)[1];
-        var theta = init_theta + theta_delta;
-        this.endingPositions.push(polarToCartesian([this.radius, theta],[cx,cy]));
+        this.endingPositions.push(this.getCoords(this.duration, i));
     }
 };
 

@@ -45,8 +45,8 @@ button {
 	var radius = 100 / Math.sqrt(2);
 	var playing = true;
 
-	dance.addMove(new Allemande(6, 1, 35, dance.lastMoveEnding));
-	dance.addMove(new Circle(6, 1, radius, dance.lastMoveEnding));
+	dance.addMove(new Allemande(8, 1, 35, dance.lastMoveEnding));
+	dance.addMove(new Circle(12, 1, radius, dance.lastMoveEnding));
 
 	var dancers = [];
 	for (var i = 0; i < 8; i++) {
@@ -114,7 +114,8 @@ button {
 				.attr("cy", function(d) {
 					return d.contraSet.getY(count, d);
 				});
-		slider.value(count % fullDanceLength);
+		count %= fullDanceLength
+		slider.value(count);
 		count_text.text(Math.floor(count));
 
 	}

@@ -86,7 +86,17 @@ Spin.prototype.getCoords = function (count, pos) {
 };
 
 Spin.prototype.calculateEndingPositions = function() {
-    this.endingPositions = this.startingPositions;
+    this.endingPositions = [];
+    var theta_delta = tau * this.speed * this.direction * this.duration;
+    for(var i = 0; i < 4; i++) {
+        var startingPosition = this.startingPositions[i];
+        var partnerStartingPosition = this.startingPositions[i ^ 1];
+        var cx = (startingPosition[0] + partnerStartingPosition[0]) / 2;
+        var cy = (startingPosition[1] + partnerStartingPosition[1]) / 2;
+        var init_theta = cartesianToPolar([cx,cy], startingPosition)[1];
+        var theta = init_theta + theta_delta;
+        this.endingPositions.push(polarToCartesian([this.radius, theta],[cx,cy]));
+    }
 };
 
 var Approach = function(duration, radius) {

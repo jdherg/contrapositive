@@ -10,10 +10,12 @@ var ContraSet = function (dance, dancers, cx) {
 ContraSet.prototype.getX = function (count, dancer) {
     var dancerInfo = this.getGroupAndPos(dancer.id, count);
     if(dancerInfo[0] === "top" || dancerInfo[0] === "bottom") {
+        count %= this.dance.duration;
+        count /= 4;
         if(dancerInfo[1] === 1 || dancerInfo[1] === 2) {
-            return this.cx - 50;
+            return Math.min(count, 1) * -100 + (this.cx + 50)
         } else {
-            return this.cx + 50;
+            return Math.min(count, 1) * 100 + (this.cx - 50)
         }
     } else {
         return this.center(dancerInfo[0])[0] + this.dance.getX(count, dancerInfo[1]);

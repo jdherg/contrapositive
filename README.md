@@ -25,10 +25,9 @@ localhost:8000/test/SpecRunner.html
 TODO
 ----
 
-* Progression
+* Change positions fluidly when out at top/bottom
 * Multiple sets
 * Move.defaultAction
-* Spin doesn't change positions yet
 * Pull render loop out of index.html
 * Progression mid-dance
 * Fix axis formatting

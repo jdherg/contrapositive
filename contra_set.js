@@ -58,7 +58,7 @@ ContraSet.prototype.getGroupAndPos = function(dancer_id, count) {
         }
 
         if (group >= numberOfHands4s) {
-            group = (numberOfHands4s + 1) - group;
+            group = (2 * numberOfHands4s - 1) - group;
             pos -= 2;
         }
     }

@@ -13,6 +13,10 @@ circle {
 	stroke: #000;
 }
 
+button {
+	margin-top: 50px;
+}
+
 </style>
 <link rel="stylesheet" href="lib/d3.slider/d3.slider.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
@@ -33,6 +37,7 @@ circle {
 
 	var dance = new Dance(true);
 	var radius = 100 / Math.sqrt(2);
+	var playing = true;
 	dance.addMove(new Allemande(6, 1, 35, dance.lastMoveEnding));
 	dance.addMove(new Circle(6, 1, radius, dance.lastMoveEnding));
 
@@ -57,13 +62,26 @@ circle {
 
 	var fullDanceLength = dance.duration * dancers.length;
 
-	var axis = d3.svg.axis();
+	var seek = function(e, val) {
+		draw(val);
+	};
 
-	var slider = d3.slider().axis(axis).min(0).max(fullDanceLength);
+	var axis = d3.svg.axis();
+	var slider = d3.slider()
+			.axis(axis).min(0).max(fullDanceLength)
+			.on("slide", seek);
+
 	var count_display = d3.select("body").append("div")
 			.attr("width", width)
 			.attr("id", "slider")
 			.call(slider);
+
+	var pause = function() {
+		playing = !playing;
+	};
+
+	var pauseButton = d3.select("body").append("button")
+			.text("Pause").on("click", pause);
 
 	var previousMove = dance.currentMove(0)[0];
 	draw(0);
@@ -81,7 +99,8 @@ circle {
 
 	function animate(elapsed) {
 		var count = elapsed/1000 * counts_per_second;
-		draw(count);
+		if(playing) {
+			draw(count);
+		}
 	}
-
 </script>

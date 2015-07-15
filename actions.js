@@ -20,11 +20,12 @@ Action.prototype.calculateEndingPositions = function() {
 
 
 var Wait = function (duration, radius) {
+    Action.call(this);
     this.duration = duration;
     this.radius = radius;
 };
 
-Wait.prototype.__proto__ = Action.prototype;
+Wait.prototype = Object.create(Action.prototype);
 
 Wait.prototype.calculateEndingPositions = function() {
     if(this.startingPositions === undefined) {
@@ -37,13 +38,14 @@ Wait.prototype.calculateEndingPositions = function() {
 };
 
 var Rotate = function (duration, direction, speed, radius) {
+    Action.call(this);
     this.radius = radius;
     this.direction = direction;
     this.speed = speed;
     this.duration = duration;
 };
 
-Rotate.prototype.__proto__ = Action.prototype;
+Rotate.prototype = Object.create(Action.prototype);
 
 Rotate.prototype.getCoords = function (count, pos) {
     var startingPosition = this.startingPositions[pos];
@@ -61,13 +63,14 @@ Rotate.prototype.calculateEndingPositions = function() {
 };
 
 var Spin = function (duration, direction, speed, radius) {
+    Action.call(this);
     this.duration = duration;
     this.direction = direction;
     this.speed = speed;
     this.radius = radius;
 };
 
-Spin.prototype.__proto__ = Action.prototype;
+Spin.prototype = Object.create(Action.prototype);
 
 Spin.prototype.getCoords = function (count, pos) {
     var startingPosition = this.startingPositions[pos];
@@ -88,11 +91,13 @@ Spin.prototype.calculateEndingPositions = function() {
 };
 
 var Approach = function(duration, radius) {
+    Action.call(this);
     this.duration = duration;
     this.radius = radius;
 };
 
-Approach.prototype.__proto__ = Action.prototype;
+
+Approach.prototype = Object.create(Action.prototype);
 
 Approach.prototype.getCoords = function(count, pos) {
     return this.interpolators[pos](count/this.duration);
@@ -113,11 +118,12 @@ Approach.prototype.calculateEndingPositions = function() {
 };
 
 var Retreat = function(duration, radius) {
+    Action.call(this);
     this.duration = duration;
     this.radius = radius;
 };
 
-Retreat.prototype.__proto__ = Action.prototype;
+Retreat.prototype = Object.create(Action.prototype);
 
 Retreat.prototype.getCoords = function(count, pos) {
     return this.interpolators[pos](count/this.duration);

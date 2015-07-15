@@ -55,7 +55,7 @@ var Stand = function (duration, radius) {
     this.addAction(new Wait(duration, radius));
 };
 
-Stand.prototype.__proto__ = Move.prototype;
+Stand.prototype = Object.create(Move.prototype);
 
 var Circle = function (duration, direction, radius, previousMoveEnding) {
     Move.call(this, duration, radius, previousMoveEnding);
@@ -75,4 +75,4 @@ var Allemande = function (duration, direction, radius, previousMoveEnding) {
     this.addAction(new Retreat(1, 50));
 };
 
-Allemande.prototype.__proto__ = Move.prototype;
+Allemande.prototype = Object.create(Move.prototype);
